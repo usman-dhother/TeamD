@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"a697e234f9e242c8b4c2ff78c493bd8b","collectionName":"paymentInfo","type":"collection"}
