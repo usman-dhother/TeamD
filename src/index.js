@@ -1,5 +1,4 @@
-const express = require('express');
-const app = express();
+
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -7,9 +6,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-app.listen(3000, function() {
-  console.log('listening on 3000');
-});
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
