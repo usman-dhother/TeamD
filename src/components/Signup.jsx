@@ -1,100 +1,158 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import axios from 'axios';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import axios from "axios";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { signupUserAsync } from "../actions/auth";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "./Loader";
 
 const Signup = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Reset previous errors
-        setError(null);
+    dispatch(signupUserAsync({ email, password, firstName, lastName }));
+  };
 
-        try {
-            const response = await axios.post('https://your-api-endpoint/signup', {
-                email,
-                password: btoa(password),
-                firstName,
-                lastName
-            });
+  return (
+    <>
+      {loading && <Loader />}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh",
+          backgroundImage: `url("/Login.jpeg")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Box
+          component="div"
+          sx={{
+            width: "340px",
+            padding: "30px",
+            backgroundColor: "rgba(255, 255, 255, 0.9)", // Almost opaque white
+            borderRadius: "15px",
+            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)", // Soft box shadow
+            marginRight: "10%",
+          }}
+        >
+          <Typography variant="h5" align="center" mb={3} color="textSecondary">
+            Signup
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="First Name"
+              variant="outlined"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Last Name"
+              variant="outlined"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Email"
+              variant="outlined"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-            if (response.data && response.data.success) {
-                // Handle success, e.g., redirect or show a success message
-            } else {
-                // Handle other responses (e.g., errors returned by your API)
-                setError(response.data.message || 'Unknown error occurred.');
-            }
-        } catch (err) {
-            // Handle errors (e.g., network issues or invalid input)
-            setError(err.response?.data?.message || 'Error signing up.');
-        }
-    };
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Password"
+              variant="outlined"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      edge="end"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-    return (
-        <Box component="div" sx={{ width: '300px', margin: '0 auto', padding: '20px' }}>
-            <Typography variant="h4" align="center">
-                Signup
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Confirm Password"
+              variant="outlined"
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      edge="end"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              style={{ height: "56px" }}
+              variant="contained"
+              color="primary"
+              type="submit"
+              fullWidth
+            >
+              Signup
+            </Button>
+          </form>
+          {error && (
+            <Typography variant="body2" color="error" align="center" mt={2}>
+              {error}
             </Typography>
-            <form onSubmit={handleSubmit}>
-                <TextField 
-                    fullWidth
-                    margin="normal"
-                    label="First Name"
-                    variant="outlined"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                />
-                <TextField 
-                    fullWidth
-                    margin="normal"
-                    label="Last Name"
-                    variant="outlined"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                />
-                <TextField 
-                    fullWidth
-                    margin="normal"
-                    label="Email"
-                    variant="outlined"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <TextField 
-                    fullWidth
-                    margin="normal"
-                    label="Password"
-                    variant="outlined"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <TextField 
-                    fullWidth
-                    margin="normal"
-                    label="Confirm Password"
-                    variant="outlined"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <Button variant="contained" color="primary" type="submit" fullWidth>
-                    Signup
-                </Button>
-            </form>
-            {error && <div className="error">{error}</div>}
+          )}
         </Box>
-    );
+      </Box>
+    </>
+  );
 };
 
 export default Signup;
