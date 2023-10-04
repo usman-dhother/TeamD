@@ -20,6 +20,7 @@ module.exports = app => {
     app.get('/user/id/:_id', UserController.getUserById);
     app.put('/user/update/:username',UserController.updateUser);
 
+    app.post('/user/login', UserController.login);
 
 
 

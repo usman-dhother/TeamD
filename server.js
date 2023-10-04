@@ -1,12 +1,11 @@
 // Import required modules
 
-const UserController = require('./controller/userController');
+const UserController = require('./server/controller/userController');
 
 const express = require('express');
 const mongoose = require('mongoose');
 
 const cors = require("cors");
-const helmet = require('helmet');
 
 
 
@@ -18,7 +17,6 @@ const app = express();
 require("../server/routes")(app);
 app.use(express.json());
 app.use(cors());
-app.use(helmet());
 // Define the MongoDB connection URI (replace with your actual MongoDB URI)
 const mongoURI = 'mongodb+srv://tdiazpiedra:VdpKBsp6FQQkrNpv@fooddelivery.nyrstpp.mongodb.net/';
 
@@ -44,7 +42,7 @@ mongoose.connect('mongodb+srv://tdiazpiedra:VdpKBsp6FQQkrNpv@fooddelivery.nyrstp
     });
 
 // Start the Express server
-    const port = process.env.PORT || 8080;
+    const port = process.env.PORT || 3001;
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
