@@ -18,6 +18,7 @@ module.exports = app => {
     app.get('/user/name/:first_name', UserController.findUserByFirstName);
     app.get('/user', UserController.getAllUsers);
     app.get('/user/id/:_id', UserController.getUserById);
+    app.put('/user/update/:username',UserController.updateUser);
 
 
 
