@@ -1,31 +1,54 @@
 const User = require('../models/userModel'); // Adjust the path as needed
+const bcrypt = require('bcrypt');
+
+async function login(req, res) {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email }); // Find the user by email
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (!bcrypt.compare(password, user.password_hash)) {
+            return res.status(401).json({ error: 'Incorrect password' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).json({ error: 'Unable to log in' });
+    }
+}
 
 // Create a new user
 async function createUser(req, res) {
     try {
         const {
-            username,
+            // username,
             email,
-            password_hash, // Make sure to hash the password before saving it
-            first_name,
-            last_name,
-            phone_number,
-            address,
-            payment_info_id,
-            user_type,
+            password: password_hash, // Make sure to hash the password before saving it
+            firstName: first_name,
+            lastName: last_name,
+            // phone_number,
+            // address,
+            // payment_info_id,
+            // user_type,
         } = req.body;
+
+        const encry = await bcrypt.hash(password_hash, 10)
 
         // Create a new user document
         const newUser = new User({
-            username,
+            username: email,
             email,
-            password_hash: password_hash, // Assuming you hash the password before saving
+            password_hash: encry, // Assuming you hash the password before saving
             first_name: first_name,
             last_name: last_name,
-            phone_number: phone_number,
-            address,
-            payment_info_id,
-            user_type: user_type,
+            // phone_number: phone_number,
+            // address,
+            // payment_info_id,
+            user_type: 'user',
         });
 
         // Save the user to the database
@@ -113,5 +136,5 @@ async function updateUser(req, res) {
 
 
 module.exports = {
-    createUser, getUserById, getAllUsers, findUserByFirstName, updateUser
+    createUser, getUserById, getAllUsers, findUserByFirstName, updateUser, login
 };
