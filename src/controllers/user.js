@@ -25,28 +25,28 @@ async function login(req, res) {
 async function createUser(req, res) {
     try {
         const {
-            username,
+            // username,
             email,
-            password_hash, // Make sure to hash the password before saving it
-            first_name,
-            last_name,
-            phone_number,
-            address,
-            payment_info_id,
-            user_type,
+            password: password_hash, // Make sure to hash the password before saving it
+            firstName: first_name,
+            lastName: last_name,
+            // phone_number,
+            // address,
+            // payment_info_id,
+            // user_type,
         } = req.body;
-
+        const encrypt_pwd = await bcrypt.hash(password_hash, 10)
         // Create a new user document
         const newUser = new User({
-            username,
+            username: email,
             email,
-            password_hash: bcrypt.hash(password_hash, 10), // Assuming you hash the password before saving
+            password_hash: encrypt_pwd, // Assuming you hash the password before saving
             first_name: first_name,
             last_name: last_name,
-            phone_number: phone_number,
-            address,
-            payment_info_id,
-            user_type: user_type,
+            // phone_number: phone_number,
+            // address,
+            // payment_info_id,
+            user_type: 'user',
         });
 
         // Save the user to the database
