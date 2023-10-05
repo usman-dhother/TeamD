@@ -1,0 +1,2 @@
+MONGO_URI=mongodb+srv://tdiazpiedra:VdpKBsp6FQQkrNpv@fooddelivery.nyrstpp.mongodb.net/FoodDelivery?retryWrites=true&w=majority&appName=AtlasApp
+APP_PORT=8080
