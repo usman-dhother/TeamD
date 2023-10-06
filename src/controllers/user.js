@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs')
-const User = require('../models/user'); // Adjust the path as needed
+const User = require('../models/user');
+const emailService = require('../email');
+const crypto = require('crypto');
 
 async function login(req, res) {
     const { email, password } = req.body;
@@ -105,6 +107,28 @@ const findUserByFirstName = async (req, res) => {
         console.error('Error finding users by first name:', error);
         return res.status(500).json({ message: 'Internal server error.' });
     }
+};
+
+exports.forgotPassword = (req, res) => {
+    const { email } = req.body;
+
+    // Generate a reset token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    // TODO: Store the token in your database associated with the email and an expiration time
+
+    // Send the reset email
+    emailService.sendResetPasswordEmail(email, resetToken);
+
+    res.send({ message: 'Reset email sent' });
+};
+
+exports.resetPassword = (req, res) => {
+    const { token, newPassword } = req.body;
+
+    // TODO: Validate the token, check expiration, and reset the password in your database
+
+    res.send({ message: 'Password reset successful' });
 };
 module.exports = {
     createUser, getUserById, getAllUsers, findUserByFirstName, login
