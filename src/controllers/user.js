@@ -130,6 +130,32 @@ exports.resetPassword = (req, res) => {
 
     res.send({ message: 'Password reset successful' });
 };
+//Update User
+async function updateUser(req, res) {
+    try {
+        const userId = req.params.username;
+        const updateData = req.body; // Data to update
+
+        // Use findOneAndUpdate to find and update the user by ID
+        const updatedUser = await User.findOneAndUpdate(
+            { username: userId },
+            updateData,
+            { new: true } // Return the updated user
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Unable to update user' });
+    }
+
+};
+
+
 module.exports = {
-    createUser, getUserById, getAllUsers, findUserByFirstName, login
+    createUser, getUserById, getAllUsers, findUserByFirstName, login, updateUser
 };
