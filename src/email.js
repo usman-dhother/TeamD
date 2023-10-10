@@ -3,15 +3,15 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'youremail@gmail.com',
-        pass: 'yourpassword'
+        user: 'hungerexpressdomain@gmail.com',
+        pass: 'bwld mluo dvhd ynsx'
     }
 });
 
 
 exports.send = (email, message) => {
     const mailOptions = {
-        from: 'youremail@gmail.com',
+        from: 'hungerexpressdomain@gmail.com',
         to: email,
         subject: 'Reset Password',
         text: message

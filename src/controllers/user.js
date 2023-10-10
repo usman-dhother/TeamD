@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/user'); // Adjust the path as needed
+const emailService = require('../email');
+const jwt = require('../auth');
 
 async function login(req, res) {
     const { email, password } = req.body;
@@ -10,16 +12,18 @@ async function login(req, res) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        if (!bcrypt.compare(password, user.password_hash)) {
+        const isMatch = await bcrypt.compare(password, user.password_hash); // Compare password asynchronously
+        if (!isMatch) {
             return res.status(401).json({ error: 'Incorrect password' });
         }
 
         res.status(200).json(user);
     } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ error: 'Unable to log in' });
+        console.error('Error logging in:', error.message); // Log the error message
+        res.status(500).json({ error: 'Unable to log in', message: error.message }); // Send the error message in the response (optional and only in development environment)
     }
 }
+
 
 // Create a new user
 async function createUser(req, res) {
@@ -132,7 +136,37 @@ async function updateUser(req, res) {
 
 };
 
+async function resetPassword(req, res) {
+    const email = req.body.email;
+
+    const user = User.findOne({email});
+
+    if (!user) {
+        res.status(403).send("User not found");
+    }
+
+    const token = jwt.generate(user);
+
+    const message = `Click here to reset password: https://hunger-express.vercel.app/reset-password?token=${token}&email=${email}`;
+
+    emailService.send(email, message);
+
+    res.status(200).send('Email Sent Successfully!!');
+
+}
+
+async function changePassword(req, res) {
+    const {password, email} = req.body;
+
+    const encrypt_pwd = await bcrypt.hash(password, 10)
+
+    await User.updateOne({email},{$set: {password_hash: encrypt_pwd}});
+
+    res.status(200).send('Password Updated');
+
+}
+
 
 module.exports = {
-    createUser, getUserById, getAllUsers, findUserByFirstName, login, updateUser
+    createUser, getUserById, getAllUsers, findUserByFirstName, login, updateUser, resetPassword, changePassword
 };
