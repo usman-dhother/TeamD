@@ -14,7 +14,7 @@ class Database {
 
   async connect() {
     try {
-      await mongoose.connect(functions.config().mongo?.uri || process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+      await mongoose.connect("mongodb+srv://tdiazpiedra:VdpKBsp6FQQkrNpv@fooddelivery.nyrstpp.mongodb.net/FoodDelivery?retryWrites=true&w=majority&appName=AtlasApp", { useNewUrlParser: true, useUnifiedTopology: true });
       console.log('Connected to MongoDB');
     } catch (error) {
       console.error('Database connection failed:', error);
