@@ -27,6 +27,12 @@ const menuItemsSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    allergy_info: {
+        type: Array
+    },
+    calories: {
+        type: String
+    },
 });
 
 module.exports = mongoose.model('MenuItem', menuItemsSchema,'menuItems');

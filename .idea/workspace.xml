@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d25173a-d167-4df2-af8a-11036dfc1c9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/user.js" afterDir="false" />
+    <list default="true" id="4d25173a-d167-4df2-af8a-11036dfc1c9b" name="Changes" comment="Updated user model">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/menuItemsModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/menuItemsModel.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,8 +55,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1696942827592</updated>
-      <workItem from="1696942828779" duration="295000" />
+      <workItem from="1696942828779" duration="1746000" />
     </task>
+    <task id="LOCAL-00001" summary="Updated user model">
+      <created>1696943141946</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696943141946</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -71,5 +80,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Updated user model" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated user model" />
   </component>
 </project>
