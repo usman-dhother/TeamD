@@ -13,4 +13,10 @@ router.put('/user/update/:username',userController.updateUser);
 router.post('/user/reset-password', userController.resetPassword);
 router.post('/user/change-password', auth.isValid, userController.changePassword);
 
+//TODO thomas - add the location and notification for user table
+// router.put('/user/locationAccess',userController.updateUserLocationAccess);
+// router.put('/user/allowNotifications', userController.updateUserAllowNotifications);
+// router.get('/user/locationAccess/:_id', userController.getLocationAccess);
+// router.get('/user/allowNotifications/:_id', userController.getAllowNotification);
+
 module.exports = router;
