@@ -25,9 +25,12 @@ router.get('/restaurant-images/:restaurant_id', async (req, res) => {
             return res.status(404).send('Image name not found for the given restaurant ID');
         }
 
-        // Extract the image filename from the restaurantImg field
-        const imageName = path.basename(restaurant.restaurantImg); // This will get "restaurant1.jpeg" from "/restaurant-images/restaurant1.jpeg"
-        const imagePath = path.join(__dirname, 'restaurant-images', imageName); // Construct the path
+        console.log("restaurantImg:", restaurant.restaurantImg);
+        const imageName = path.basename(restaurant.restaurantImg);
+        console.log("imageName:", imageName);
+        const imagePath = path.join(__dirname, 'restaurant-images', imageName);
+        console.log("imagePath:", imagePath);
+
 
         console.log("Constructed image path:", imagePath); // Log the constructed image path
 
