@@ -3,9 +3,24 @@ const router = express.Router();
 const RestaurantController = require('../controllers/restaurantController');
 const RestaurantCategoryController = require('../controllers/restaurantCategoryController');
 const MenuItemsController = require('../controllers/menuItemsController');
-
+const path = require('path');
+const fs = require('fs');
 
 const userRoutes = require('./user');
+
+router.get('/restaurant-images/:imageName', (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, '/restaurant-images', imageName);
+    console.log("Accessing image route"); 
+
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.error(`Error accessing image: ${imageName}`, err);
+            return res.status(404).send('Image not found');
+        }
+        res.sendFile(imagePath);
+    });
+});
 
 router.post("/restaurant/create",RestaurantController.createRestaurant);
 router.get('/restaurant/:restaurantId',RestaurantController.getRestaurantById);
