@@ -11,7 +11,7 @@ router.get('/user/id/:_id', userController.getUserById);
 router.post('/user/login', userController.login);
 router.put('/user/update/:username',userController.updateUser);
 router.post('/user/reset-password', userController.resetPassword);
-router.post('/user/change-password', auth.isValid, userController.changePassword);
+router.post('/user/change-password', userController.changePassword);
 
 //TODO thomas - add the location and notification for user table
 // router.put('/user/locationAccess',userController.updateUserLocationAccess);

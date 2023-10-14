@@ -160,9 +160,25 @@ async function changePassword(req, res) {
 
     const encrypt_pwd = await bcrypt.hash(password, 10)
 
-    await User.updateOne({email},{$set: {password_hash: encrypt_pwd}});
+    if (req.body.existingPassword && req.body.username) {
+        const {username, existingPassword} = req.body;
 
-    res.status(200).send('Password Updated');
+        const user = await User.findOne({ username }); // Find the user by email
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(existingPassword, user.password_hash); // Compare password asynchronously
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Existing Password Doesnt match' });
+        }
+
+        await User.updateOne({username},{$set: {password_hash: encrypt_pwd}});
+        res.status(200).send('Password Updated');
+    } else {
+        await User.updateOne({email},{$set: {password_hash: encrypt_pwd}});
+        res.status(200).send('Password Updated');
+    }
 
 }
 
