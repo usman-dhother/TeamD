@@ -3,24 +3,48 @@ const router = express.Router();
 const RestaurantController = require('../controllers/restaurantController');
 const RestaurantCategoryController = require('../controllers/restaurantCategoryController');
 const MenuItemsController = require('../controllers/menuItemsController');
+const Restaurant = require('../models/restaurantModel');
 const path = require('path');
 const fs = require('fs');
 
 const userRoutes = require('./user');
 
-router.get('/restaurant-images/:imageName', (req, res) => {
-    const imageName = req.params.imageName;
-    const imagePath = path.join(__dirname, '/restaurant-images', imageName);
-    console.log("Accessing image route"); 
+router.get('/restaurant-images/:restaurant_id', async (req, res) => {
+    const restaurantId = req.params.restaurant_id;
+    
+    try {
+        const restaurant = await Restaurant.findById(restaurantId);
 
-    fs.access(imagePath, fs.constants.F_OK, (err) => {
-        if (err) {
-            console.error(`Error accessing image: ${imageName}`, err);
-            return res.status(404).send('Image not found');
+        if (!restaurant) {
+            console.log(`Restaurant with ID ${restaurantId} not found in the database.`);
+            return res.status(404).send('Restaurant not found');
         }
-        res.sendFile(imagePath);
-    });
+
+        if (!restaurant.restaurantImg) {
+            console.log(`Image name not set for restaurant with ID ${restaurantId}.`);
+            return res.status(404).send('Image name not found for the given restaurant ID');
+        }
+
+        // Extract the image filename from the restaurantImg field
+        const imageName = path.basename(restaurant.restaurantImg); // This will get "restaurant1.jpeg" from "/restaurant-images/restaurant1.jpeg"
+        const imagePath = path.join(__dirname, 'restaurant-images', imageName); // Construct the path
+
+        console.log("Constructed image path:", imagePath); // Log the constructed image path
+
+        fs.access(imagePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error(`Error accessing image: ${imageName}`, err);
+                return res.status(404).send('Image not found');
+            }
+            res.sendFile(imagePath);
+        });
+    } catch (error) {
+        console.error("Error fetching restaurant:", error);
+        res.status(500).send('Internal Server Error');
+    }
 });
+
+
 
 router.post("/restaurant/create",RestaurantController.createRestaurant);
 router.get('/restaurant/:restaurantId',RestaurantController.getRestaurantById);
