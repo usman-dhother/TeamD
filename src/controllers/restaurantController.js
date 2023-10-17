@@ -1,6 +1,6 @@
-const Restaurant = require('../models/restaurantModel'); // Adjust the path as needed
+const Restaurant = require('../models/restaurantModel'); 
 
-//Create a new restaurant
+// Create a new restaurant
 async function createRestaurant(req, res) {
     try {
         const {
@@ -10,7 +10,7 @@ async function createRestaurant(req, res) {
             phone_number,
             owner_id, // Assuming you have this value in the request
             category_id, // Assuming you have this value in the request
-            restaurantImg, // Image URL or file path
+            restaurantImg, // Image URL or file path from Firebase Storage
         } = req.body;
 
         // Create a new restaurant document
@@ -21,7 +21,7 @@ async function createRestaurant(req, res) {
             phone_number,
             owner_id,
             category_id,
-            restaurantImg,
+            restaurantImg, // Firebase Storage URL
         });
 
         // Save the restaurant to the database
@@ -34,10 +34,9 @@ async function createRestaurant(req, res) {
     }
 }
 
-//Read restaurant by ID
+// Read restaurant by ID
 async function getRestaurantById(req, res) {
     const restaurantId = req.params.restaurantId; // Assuming you use "restaurantId" as the route parameter
-    //console.log(req.params._id);
 
     try {
         const restaurant = await Restaurant.findById(restaurantId);
@@ -53,7 +52,7 @@ async function getRestaurantById(req, res) {
     }
 }
 
-//Read all restaurants
+// Read all restaurants
 async function getAllRestaurants(req, res) {
     try {
         const restaurants = await Restaurant.find();
@@ -65,8 +64,7 @@ async function getAllRestaurants(req, res) {
     }
 }
 
-
-//Update restaurant
+// Update restaurant
 async function updateRestaurant(req, res) {
     try {
         const restaurantId = req.params.restaurantId; // Assuming you use "restaurantId" as the route parameter
@@ -90,8 +88,7 @@ async function updateRestaurant(req, res) {
     }
 }
 
-
-//Delete restaurant
+// Delete restaurant
 async function deleteRestaurantById(req, res) {
     const restaurantId = req.params.restaurantId; // Assuming you use "restaurantId" as the route parameter
 
@@ -110,13 +107,10 @@ async function deleteRestaurantById(req, res) {
     }
 }
 
-
-
-
-
-
-
-
 module.exports = {
-    createRestaurant, getRestaurantById, getAllRestaurants, updateRestaurant, deleteRestaurantById
+    createRestaurant,
+    getRestaurantById,
+    getAllRestaurants,
+    updateRestaurant,
+    deleteRestaurantById,
 };

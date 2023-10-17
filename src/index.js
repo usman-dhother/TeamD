@@ -6,6 +6,7 @@ const routes = require('./routes/index');
 const helmet = require('helmet');
 const db = require('./database');
 const port = 3001;
+// const imageUpload = require('./middleware/imageUpload');
 
 const app = express();
 
@@ -15,6 +16,9 @@ app.use(helmet());
 
 
 app.use('/', routes);
+
+// app.use('/api', imageUpload);
+
 
 app.listen(port, () => {
   console.log(`Express server listening on ${port}`)
