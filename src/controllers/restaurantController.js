@@ -1,5 +1,5 @@
 const Restaurant = require('../models/restaurantModel'); 
-
+const cloudinary = require('../config/cloudinary');
 // Create a new restaurant
 async function createRestaurant(req, res) {
     try {
@@ -13,6 +13,12 @@ async function createRestaurant(req, res) {
             restaurantImg, // Image URL or file path from Firebase Storage
         } = req.body;
 
+        let img_url = '';
+
+        if (restaurantImg) {
+            img_url = await cloudinary.uploader.upload(restaurantImg);
+        }
+
         // Create a new restaurant document
         const newRestaurant = new Restaurant({
             name,
@@ -21,7 +27,7 @@ async function createRestaurant(req, res) {
             phone_number,
             owner_id,
             category_id,
-            restaurantImg, // Firebase Storage URL
+            restaurantImg: img_url, // Firebase Storage URL
         });
 
         // Save the restaurant to the database
