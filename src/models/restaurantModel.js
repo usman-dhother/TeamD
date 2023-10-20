@@ -19,14 +19,14 @@ const restaurantSchema = new mongoose.Schema({
         required: true,
     },
     owner_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'user', // Reference to the Users collection
-        required: true,
+        // required: true,
     },
     category_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'restaurantCategory', // Reference to the RestaurantCategories collection
-        required: true,
+        // required: true,
     },
     restaurantImg: {
         type: String, // Assuming you'll store image URLs or file paths as strings

@@ -13,7 +13,9 @@ async function createRestaurant(req, res) {
             restaurantImg, // Image URL or file path from Firebase Storage
         } = req.body;
 
-        let img_url = '';
+        let img_url = {
+            url: ""
+        };
 
         if (restaurantImg) {
             img_url = await cloudinary.uploader.upload(restaurantImg);
@@ -25,9 +27,9 @@ async function createRestaurant(req, res) {
             description,
             address,
             phone_number,
-            owner_id,
-            category_id,
-            restaurantImg: img_url, // Firebase Storage URL
+            // owner_id: "",
+            // category_id: "",
+            restaurantImg: img_url.url, // Firebase Storage URL
         });
 
         // Save the restaurant to the database
