@@ -3,6 +3,10 @@ const router = express.Router();
 const RestaurantController = require('../controllers/restaurantController');
 const RestaurantCategoryController = require('../controllers/restaurantCategoryController');
 const MenuItemsController = require('../controllers/menuItemsController');
+const OrderController = require('../controllers/orderController');
+const OrderItemsController = require('../controllers/orderItemsController');
+const OrderHistoryController = require('../controllers/orderHistoryController');
+const PaymentInfoController = require('../controllers/paymentInfoController');
 const Restaurant = require('../models/restaurantModel');
 const path = require('path');
 const fs = require('fs');
@@ -74,5 +78,14 @@ router.delete('/menuItems/delete/:menuItemId',MenuItemsController.deleteMenuItem
 
 // Mount the individual routers
 router.use('/', userRoutes);
+
+
+router.post("/orders/create",OrderController.createOrder);
+router.get("/orders/",OrderController.getAllOrders);
+router.get("/orders/:orderId",OrderController.getOrderById);
+router.get("/orders/user/:userId",OrderController.getOrdersByUserId);
+router.put("/orders/update/:orderId",OrderController.updateOrder);
+router.delete("/orders/delete/:orderId",OrderController.deleteOrderById);
+router.get('/orders/history/:userId',OrderController.getOrdersByUserId);
 
 module.exports = router;

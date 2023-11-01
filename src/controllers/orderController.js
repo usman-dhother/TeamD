@@ -3,22 +3,16 @@ const Order = require('../models/orderModel');
 // Create a new order
 async function createOrder(req, res) {
     try {
-        const {
-            user_id,
-            restaurant_id,
-            order_status,
-            delivery_address,
-            total_price,
-            payment_info_id,
-        } = req.body;
+
+        const { order: {user_id, restaurant_id, delivery_address, total_price, payment_info}, orderItems: order_items} = req.body
 
         const newOrder = new Order({
             user_id,
             restaurant_id,
-            order_status,
             delivery_address,
             total_price,
-            payment_info_id,
+            payment_info,
+            order_items
         });
 
         const savedOrder = await newOrder.save();

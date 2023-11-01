@@ -1,3 +1,4 @@
+const { object } = require('firebase-functions/v1/storage');
 const mongoose = require('mongoose');
 
 // Define the Order Schema
@@ -16,7 +17,7 @@ const orderSchema = new mongoose.Schema({
     order_status: {
         type: String,
         enum: ['Placed', 'In Progress', 'Completed', 'Canceled'],
-        required: true,
+        default: 'Placed'
     },
     order_date: {
         type: Date,
@@ -27,10 +28,12 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    payment_info_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'PaymentInfo', // Foreign Key reference to PaymentInfo
+    payment_info: {
+        type: object
     },
+    order_items: {
+        type: Array
+    }
 });
 
 // Create and export the Order model
