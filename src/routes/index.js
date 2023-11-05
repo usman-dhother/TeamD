@@ -7,6 +7,7 @@ const OrderController = require('../controllers/orderController');
 const OrderItemsController = require('../controllers/orderItemsController');
 const OrderHistoryController = require('../controllers/orderHistoryController');
 const PaymentInfoController = require('../controllers/paymentInfoController');
+const DelvieryDriverController = require('../controllers/deliveryDriverController');
 const Restaurant = require('../models/restaurantModel');
 const path = require('path');
 const fs = require('fs');
@@ -87,5 +88,12 @@ router.get("/orders/user/:userId",OrderController.getOrdersByUserId);
 router.put("/orders/update/:orderId",OrderController.updateOrder);
 router.delete("/orders/delete/:orderId",OrderController.deleteOrderById);
 router.get('/orders/history/:userId',OrderController.getOrdersByUserId);
+
+ //Delivery Driver Routes
+ app.post("/drivers/create",DelvieryDriverController.createDeliveryDriver);
+ app.get("/drivers/",DelvieryDriverController.getAllDeliveryDrivers);
+ app.get("/drivers/:driverId",DelvieryDriverController.getDeliveryDriverById);
+ app.put("/drivers/update/:driverId",DelvieryDriverController.updateDeliveryDriver);
+ app.delete("/drivers/delete/:driverId",DelvieryDriverController.deleteDeliveryDriverById);
 
 module.exports = router;

@@ -68,7 +68,7 @@ async function getOrdersByUserId(req, res) {
     }
 }
 
-// Update order
+// Update order// In OrderController.js
 async function updateOrder(req, res) {
     try {
         const orderId = req.params.orderId;
@@ -90,6 +90,7 @@ async function updateOrder(req, res) {
         res.status(500).json({ error: 'Unable to update order' });
     }
 }
+
 
 // Delete order
 async function deleteOrderById(req, res) {
