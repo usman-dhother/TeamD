@@ -121,11 +121,12 @@ async function processOrder(req, res) {
     try {
         const orderId = req.params.orderId;
 
-        // Simulate a random delay between 1 and 5 minutes (in milliseconds)
-        const inProgressDelay = Math.floor(Math.random() * (5 * 60 * 1000 - 1 * 60 * 1000) + 1 * 60 * 1000);
+        //Delay 30 seconds
+        const inProgressDelay = 30 * 1000;
+        
         console.log(`Order ID ${orderId}: In Progress delay - ${inProgressDelay / 1000} seconds`);
 
-        // Set inProgress to true after the random delay
+        // Set inProgress to true after the 30 second delay
         setTimeout(async () => {
             try {
                 const updatedOrder = await Order.findOneAndUpdate(
@@ -134,12 +135,13 @@ async function processOrder(req, res) {
                     { new: true }
                 );
                 console.log(`Order ID ${orderId}: In Progress set to true`);
-
-                // Simulate a random delay between 5 and 15 minutes (in milliseconds)
-                const completedDelay = Math.floor(Math.random() * (15 * 60 * 1000 - 5 * 60 * 1000) + 5 * 60 * 1000);
+                
+                //60 second Delay
+                const completedDelay = 60 * 1000;
+                
                 console.log(`Order ID ${orderId}: Completed delay - ${completedDelay / 1000} seconds`);
 
-                // Set completed to true after the second random delay
+                // Set completed to true after the 60 second delay
                 setTimeout(async () => {
                     try {
                         const updatedOrder = await Order.findOneAndUpdate(
