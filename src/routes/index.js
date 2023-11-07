@@ -96,4 +96,7 @@ router.get('/orders/history/:userId',OrderController.getOrdersByUserId);
  app.put("/drivers/update/:driverId",DelvieryDriverController.updateDeliveryDriver);
  app.delete("/drivers/delete/:driverId",DelvieryDriverController.deleteDeliveryDriverById);
 
+ //NEW ORDER PROCESS ROUTE
+    app.put("/orders/process/:orderId",OrderController.processOrder);
+
 module.exports = router;
