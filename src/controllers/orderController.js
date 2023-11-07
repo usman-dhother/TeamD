@@ -3,15 +3,23 @@ const Order = require('../models/orderModel');
 // Create a new order
 async function createOrder(req, res) {
     try {
-
-        const { order: {user_id, restaurant_id, delivery_address, total_price, payment_info}, orderItems: order_items} = req.body
+        const {
+            user_id,
+            restaurant_id,
+            order_status,
+            delivery_address,
+            total_price,
+            payment_info_id,
+            order_items
+        } = req.body;
 
         const newOrder = new Order({
             user_id,
             restaurant_id,
+            order_status,
             delivery_address,
             total_price,
-            payment_info,
+            payment_info_id,
             order_items
         });
 
@@ -68,7 +76,7 @@ async function getOrdersByUserId(req, res) {
     }
 }
 
-// Update order// In OrderController.js
+// Update order
 async function updateOrder(req, res) {
     try {
         const orderId = req.params.orderId;
@@ -91,7 +99,6 @@ async function updateOrder(req, res) {
     }
 }
 
-
 // Delete order
 async function deleteOrderById(req, res) {
     const orderId = req.params.orderId;
@@ -110,6 +117,62 @@ async function deleteOrderById(req, res) {
     }
 }
 
+async function processOrder(req, res) {
+    try {
+        const orderId = req.params.orderId;
+
+        //Delay 30 seconds
+        const inProgressDelay = 30 * 1000;
+        
+        console.log(`Order ID ${orderId}: In Progress delay - ${inProgressDelay / 1000} seconds`);
+
+        // Set inProgress to true after the 30 second delay
+        setTimeout(async () => {
+            try {
+                const updatedOrder = await Order.findOneAndUpdate(
+                    { _id: orderId },
+                    { order_status: 'In Progress' },
+                    { new: true }
+                );
+                console.log(`Order ID ${orderId}: In Progress set to true`);
+                
+                //60 second Delay
+                const completedDelay = 60 * 1000;
+                
+                console.log(`Order ID ${orderId}: Completed delay - ${completedDelay / 1000} seconds`);
+
+                // Set completed to true after the 60 second delay
+                setTimeout(async () => {
+                    try {
+                        const updatedOrder = await Order.findOneAndUpdate(
+                            { _id: orderId },
+                            { order_status: 'Completed' },
+                            { new: true }
+                        );
+                        console.log(`Order ID ${orderId}: Completed set to true`);
+                    } catch (error) {
+                        console.error(`Error processing order ID ${orderId} (Completed status):`, error);
+                    }
+                }, completedDelay);
+
+                if (!updatedOrder) {
+                    return res.status(404).json({ error: 'Order not found' });
+                }
+
+                res.json(updatedOrder);
+            } catch (error) {
+                console.error(`Error processing order ID ${orderId} (In Progress status):`, error);
+                res.status(500).json({ error: 'Unable to update order' });
+            }
+        }, inProgressDelay);
+    } catch (error) {
+        console.error(`Error processing order ID ${orderId} (Initial update):`, error);
+        res.status(500).json({ error: 'Unable to update order' });
+    }
+}
+
+
+
 module.exports = {
-    createOrder, getOrderById, getAllOrders, getOrdersByUserId, updateOrder, deleteOrderById,
+    createOrder, getOrderById, getAllOrders, getOrdersByUserId, updateOrder, deleteOrderById, processOrder
 };
