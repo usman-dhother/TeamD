@@ -10,6 +10,9 @@ async function createOrder(req, res) {
             delivery_address,
             total_price,
             payment_info_id,
+            driver,
+            tax,
+            discount
         } = req.body;
 
         const newOrder = new Order({
@@ -19,6 +22,9 @@ async function createOrder(req, res) {
             delivery_address,
             total_price,
             payment_info_id,
+            driver,
+            tax,
+            discount
         });
 
         const savedOrder = await newOrder.save();
