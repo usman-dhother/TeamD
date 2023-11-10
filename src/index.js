@@ -16,7 +16,7 @@ app.use(helmet());
 
 
 app.use('/', routes);
-app.use('/', dialogflowRoutes);
+// app.use('/', dialogflowRoutes);
 
 // app.use('/api', imageUpload);
 

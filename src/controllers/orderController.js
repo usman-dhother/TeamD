@@ -3,34 +3,37 @@ const Order = require('../models/orderModel');
 // Create a new order
 async function createOrder(req, res) {
     try {
-        const {
-            user_id,
-            restaurant_id,
-            order_status,
-            delivery_address,
-            total_price,
-            payment_info_id,
-            order_items
-        } = req.body;
+        const { order } = req.body; 
+
+        // const {
+        //     user_id,
+        //     restaurant_id,
+        //     order_status,
+        //     delivery_address,
+        //     total_price,
+        //     payment_info_id,
+        //     order_items
+        // } = req.body;
 
         const newOrder = new Order({
-            user_id,
-            restaurant_id,
-            order_status,
-            delivery_address,
-            total_price,
-            payment_info_id,
-            order_items
+            user_id: order.user_id,
+            restaurant_id: order.restaurant_id,
+            order_status: order.order_status, // Make sure this field exists in your payload or model
+            delivery_address: order.delivery_address,
+            total_price: order.total_price, // This is now correctly referenced
+            payment_info_id: order.payment_info_id, // Make sure this field exists in your payload or model
+            order_items: req.body.orderItems // Assuming order_items is at the top level of the request body
         });
 
         const savedOrder = await newOrder.save();
 
         res.status(201).json(savedOrder);
     } catch (error) {
-        console.error('Error creating order:', error);
-        res.status(500).json({ error: 'Unable to create order' });
+        console.error('Error creating order:', error.message, error.stack);
+        res.status(500).json({ error: 'Unable to create order', details: error.message });
     }
 }
+
 
 // Read order by ID
 async function getOrderById(req, res) {
@@ -122,7 +125,7 @@ async function processOrder(req, res) {
         const orderId = req.params.orderId;
 
         //Delay 30 seconds
-        const inProgressDelay = 30 * 1000;
+        const inProgressDelay = 30 *60* 1000;
         
         console.log(`Order ID ${orderId}: In Progress delay - ${inProgressDelay / 1000} seconds`);
 
@@ -137,7 +140,7 @@ async function processOrder(req, res) {
                 console.log(`Order ID ${orderId}: In Progress set to true`);
                 
                 //60 second Delay
-                const completedDelay = 60 * 1000;
+                const completedDelay = 60 * 60 *1000;
                 
                 console.log(`Order ID ${orderId}: Completed delay - ${completedDelay / 1000} seconds`);
 

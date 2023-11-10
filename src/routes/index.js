@@ -7,7 +7,7 @@ const OrderController = require('../controllers/orderController');
 const OrderItemsController = require('../controllers/orderItemsController');
 const OrderHistoryController = require('../controllers/orderHistoryController');
 const PaymentInfoController = require('../controllers/paymentInfoController');
-const DelvieryDriverController = require('../controllers/deliveryDriverController');
+const DelvieryDriverController = require('../controllers/deliverDriverController');
 const Restaurant = require('../models/restaurantModel');
 const path = require('path');
 const fs = require('fs');
@@ -90,13 +90,13 @@ router.delete("/orders/delete/:orderId",OrderController.deleteOrderById);
 router.get('/orders/history/:userId',OrderController.getOrdersByUserId);
 
  //Delivery Driver Routes
- app.post("/drivers/create",DelvieryDriverController.createDeliveryDriver);
- app.get("/drivers/",DelvieryDriverController.getAllDeliveryDrivers);
- app.get("/drivers/:driverId",DelvieryDriverController.getDeliveryDriverById);
- app.put("/drivers/update/:driverId",DelvieryDriverController.updateDeliveryDriver);
- app.delete("/drivers/delete/:driverId",DelvieryDriverController.deleteDeliveryDriverById);
+ router.post("/drivers/create",DelvieryDriverController.createDeliveryDriver);
+ router.get("/drivers/",DelvieryDriverController.getAllDeliveryDrivers);
+ router.get("/drivers/:driverId",DelvieryDriverController.getDeliveryDriverById);
+ router.put("/drivers/update/:driverId",DelvieryDriverController.updateDeliveryDriver);
+ router.delete("/drivers/delete/:driverId",DelvieryDriverController.deleteDeliveryDriverById);
 
  //NEW ORDER PROCESS ROUTE
-    app.put("/orders/process/:orderId",OrderController.processOrder);
+router.put("/orders/process/:orderId",OrderController.processOrder);
 
 module.exports = router;
